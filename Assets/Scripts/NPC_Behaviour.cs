@@ -21,11 +21,11 @@ public class NPC_Behaviour : MonoBehaviour
     {
         
         
-
+        
         if (isNPC)
         {
             runningPatroll = StartCoroutine("Patroll");
-            StartCoroutine("DistanceDetection");
+            //StartCoroutine("DistanceDetection");
            
         }
 
@@ -133,6 +133,47 @@ public class NPC_Behaviour : MonoBehaviour
 
             yield return new WaitForSeconds(1);
         }
+    }
+
+    #endregion
+
+    #region Collider Detection
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.gameObject.CompareTag("Player"))
+        {
+            if (runningPatroll != null)
+            {
+
+                StopCoroutine("Patroll");
+                runningPatroll = null;
+
+            }
+
+            playerDetected = true;
+            StartCoroutine("Follow");
+
+        }
+    
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+
+        if (other.gameObject.CompareTag("Player"))
+        {
+            StopCoroutine("Follow");
+            playerDetected = false;
+            
+            if(runningPatroll == null)
+            {
+                runningPatroll = StartCoroutine("Patroll");
+            }
+        }
+
+        
     }
 
     #endregion
