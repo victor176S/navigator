@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class PlayerControllerKeyBoard : MonoBehaviour
     [SerializeField] private float shiftSpeedModifier;
 
     [SerializeField] private bool enSuelo;
+    [SerializeField] private bool moviendose, moviendoseAdelante, moviendoseAtras, moviendoseIzq, moviendoseDer;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,9 +22,15 @@ public class PlayerControllerKeyBoard : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
+        if (!enSuelo)
+        {
+            
+            rb.AddRelativeForce(9.81f * 4 * Time.fixedDeltaTime * Vector3.down, ForceMode.Acceleration);
+
+        }
 
 
         if (agachado)
@@ -36,6 +44,22 @@ public class PlayerControllerKeyBoard : MonoBehaviour
         
         Movimiento();
 
+    }
+
+    private void FrenoMovimiento()
+    {
+        if(moviendose == false)
+        {
+            if (rb.linearVelocity.z > 0 || rb.linearVelocity.x > 0)
+            {
+                rb.linearDamping = 10;
+            }
+        }
+
+        else
+        {
+            rb.linearDamping = 0;
+        }
     }
 
     private void Movimiento()
@@ -71,12 +95,11 @@ public class PlayerControllerKeyBoard : MonoBehaviour
         if ((Input.GetKey(KeyCode.Space) && enSuelo) || (Input.GetKeyDown(KeyCode.Space) && enSuelo))
         {
             
-            if (enSuelo)
-            {
                 
-                rb.AddRelativeForce(10 * Vector3.up, ForceMode.Impulse);
+            //no poner linear damping
+            rb.AddRelativeForce(4 * Vector3.up, ForceMode.Impulse);
 
-            }
+            
 
         }
 
@@ -84,9 +107,18 @@ public class PlayerControllerKeyBoard : MonoBehaviour
         if (Input.GetKey(KeyCode.W) || Input.GetKeyDown(KeyCode.W))
         {
 
-            
+            moviendose = true;
 
-            rb.AddRelativeForce(0.3f * shiftSpeedModifier * Vector3.forward, ForceMode.VelocityChange); 
+            moviendoseAdelante = true;
+
+            rb.AddRelativeForce(0.2f * shiftSpeedModifier * Vector3.forward, ForceMode.VelocityChange); 
+        }
+
+        else
+        {
+            moviendose = false;
+
+            moviendoseAdelante = false;
         }
 
         //Izq
@@ -94,9 +126,18 @@ public class PlayerControllerKeyBoard : MonoBehaviour
         if (Input.GetKey(KeyCode.A) || Input.GetKeyDown(KeyCode.A))
         {
 
+            moviendose = true;
 
+            moviendoseIzq = true;
 
-            rb.AddRelativeForce(0.3f * shiftSpeedModifier * Vector3.left, ForceMode.VelocityChange); 
+            rb.AddRelativeForce(0.2f * shiftSpeedModifier * Vector3.left, ForceMode.VelocityChange); 
+        }
+
+        else
+        {
+            moviendose = false;
+
+            moviendoseIzq = false;
         }
 
         // atras
@@ -104,19 +145,36 @@ public class PlayerControllerKeyBoard : MonoBehaviour
         if (Input.GetKey(KeyCode.S) || Input.GetKeyDown(KeyCode.S))
         {
 
-            
+            moviendose = true;
 
-            rb.AddRelativeForce(0.3f * shiftSpeedModifier * Vector3.back, ForceMode.VelocityChange); 
+            moviendoseAtras= true;
+
+            rb.AddRelativeForce(0.2f * shiftSpeedModifier * Vector3.back, ForceMode.VelocityChange); 
+        }
+
+        else
+        {
+            moviendose = false;
+
+            moviendoseAtras = false;
         }
 
         //derecha
 
         if (Input.GetKey(KeyCode.D) || Input.GetKeyDown(KeyCode.D))
         {
+            moviendose = true;
 
-            
+            moviendoseDer = true;
 
-            rb.AddRelativeForce(shiftSpeedModifier * 0.3f  * Vector3.right, ForceMode.VelocityChange); 
+            rb.AddRelativeForce(0.2f * shiftSpeedModifier * Vector3.right, ForceMode.VelocityChange); 
+        }
+
+        else
+        {
+            moviendose = false;
+
+            moviendoseDer = false;
         }
 
         
@@ -156,7 +214,6 @@ public class PlayerControllerKeyBoard : MonoBehaviour
             }
             
         }
-
   
 
     void OnTriggerEnter(Collider other)
