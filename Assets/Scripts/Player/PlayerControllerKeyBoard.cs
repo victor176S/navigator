@@ -25,6 +25,10 @@ public class PlayerControllerKeyBoard : MonoBehaviour
     void FixedUpdate()
     {
 
+        //freno de movimiento
+
+        rb.linearVelocity = Vector3.ClampMagnitude(rb.linearVelocity, 10);
+
         if (!enSuelo)
         {
             
@@ -44,22 +48,6 @@ public class PlayerControllerKeyBoard : MonoBehaviour
         
         Movimiento();
 
-    }
-
-    private void FrenoMovimiento()
-    {
-        if(moviendose == false)
-        {
-            if (rb.linearVelocity.z > 0 || rb.linearVelocity.x > 0)
-            {
-                rb.linearDamping = 10;
-            }
-        }
-
-        else
-        {
-            rb.linearDamping = 0;
-        }
     }
 
     private void Movimiento()
