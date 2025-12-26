@@ -3,17 +3,41 @@ using UnityEngine;
 public class CameraPlayer : MonoBehaviour
 {
 
-    [SerializeField] private Transform player;
+    [SerializeField] private GameObject player;
+
+    private Transform playerTransform;
 
     [SerializeField] float sensitivity;
     float xRotation;
 
     float yRotation;
 
-    private void Update()
+    void Start()
+    {
+        playerTransform = player.transform;
+    }
+
+    private void FixedUpdate()
 
     {
-        gameObject.transform.position = player.position;
+
+        FPSCameraLogic();
+ 
+    }
+
+    private void Update()
+    {
+        
+    }
+
+    private void FPSCameraLogic()
+    {
+        
+        gameObject.transform.position = playerTransform.position;
+
+        Vector3 eulerRotation = new Vector3(playerTransform.eulerAngles.x, transform.eulerAngles.y, playerTransform.eulerAngles.z);
+
+        player.transform.rotation = Quaternion.Euler(eulerRotation);
 
         xRotation -= Input.GetAxis("Mouse Y") * Time.deltaTime * sensitivity;
 
@@ -25,5 +49,11 @@ public class CameraPlayer : MonoBehaviour
 
     }
 
-    
+    private void CameraShiftMovement()
+    {
+        if(Input.GetKey(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            
+        } 
+    }
 }

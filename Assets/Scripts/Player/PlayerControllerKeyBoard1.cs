@@ -6,16 +6,17 @@ using UnityEngine;
 public class PlayerControllerKeyBoard1 : MonoBehaviour
 {
 
+    public static PlayerControllerKeyBoard1 instance;
+
     private Rigidbody rb;
 
-    [SerializeField] private bool agachado;
+    public bool agachado;
 
     [SerializeField] private float shiftSpeedModifier;
 
     [SerializeField] private bool enSuelo;
-
-    [SerializeField] private GameObject camara;
     [SerializeField] private bool moviendose, moviendoseAdelante, moviendoseAtras, moviendoseIzq, moviendoseDer;
+    [SerializeField] private float rozamiento;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,15 +35,17 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
         if (!enSuelo)
         {
             
-            rb.AddRelativeForce(9.81f * 4 * Time.fixedDeltaTime * Vector3.down, ForceMode.Acceleration);
+            rb.AddRelativeForce(9.81f * Time.fixedDeltaTime * Vector3.down, ForceMode.Acceleration);
 
         }
         
+        DeteccionMovimiento();
+
         Movimiento();
 
     }
 
-    private void Movimiento()
+    private void DeteccionMovimiento()
     {
 
         if ((Input.GetKey(KeyCode.Space) && enSuelo) || (Input.GetKeyDown(KeyCode.Space) && enSuelo))
@@ -50,10 +53,22 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
             
                 
             //no poner linear damping
-            rb.AddRelativeForce(4 * Vector3.up, ForceMode.Impulse);
+            rb.AddRelativeForce(2 * Vector3.up, ForceMode.Impulse);
 
             
 
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            
+            agachado = true;
+
+        }
+
+        else
+        {
+            agachado = false;
         }
 
         //de frente
@@ -64,7 +79,7 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
 
             moviendoseAdelante = true;
 
-            rb.AddRelativeForce(0.2f * shiftSpeedModifier * Vector3.forward, ForceMode.VelocityChange); 
+             
         }
 
         else
@@ -82,8 +97,6 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
             moviendose = true;
 
             moviendoseIzq = true;
-
-            rb.AddRelativeForce(0.2f * shiftSpeedModifier * Vector3.left, ForceMode.VelocityChange); 
         }
 
         else
@@ -102,7 +115,6 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
 
             moviendoseAtras= true;
 
-            rb.AddRelativeForce(0.2f * shiftSpeedModifier * Vector3.back, ForceMode.VelocityChange); 
         }
 
         else
@@ -120,8 +132,8 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
 
             moviendoseDer = true;
 
-            rb.AddRelativeForce(0.2f * shiftSpeedModifier * Vector3.right, ForceMode.VelocityChange); 
         }
+            
 
         else
         {
@@ -129,9 +141,38 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
 
             moviendoseDer = false;
         }
+    }
 
+    private void Movimiento()
+    {
         
+        if (moviendoseAdelante)
+        {
+            
+            rb.AddRelativeForce(20f * shiftSpeedModifier * Vector3.forward);
 
+        }
+
+        if (moviendoseAtras)
+        {
+            
+            rb.AddRelativeForce(20f * shiftSpeedModifier * Vector3.back);
+
+        }
+
+        if (moviendoseDer)
+        {
+            
+            rb.AddRelativeForce(20f * shiftSpeedModifier * Vector3.right); 
+
+        }
+
+        if (moviendoseIzq)
+        {
+            
+            rb.AddRelativeForce(20f * shiftSpeedModifier * Vector3.left); 
+
+        }
     }
     
     void OnTriggerEnter(Collider other)
