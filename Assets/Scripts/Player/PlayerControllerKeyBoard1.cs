@@ -3,7 +3,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerControllerKeyBoard : MonoBehaviour
+public class PlayerControllerKeyBoard1 : MonoBehaviour
 {
 
     private Rigidbody rb;
@@ -64,7 +64,7 @@ public class PlayerControllerKeyBoard : MonoBehaviour
 
             moviendoseAdelante = true;
 
-            rb.AddRelativeForce(2 * shiftSpeedModifier * Vector3.forward, ForceMode.VelocityChange); 
+            rb.AddRelativeForce(0.2f * shiftSpeedModifier * Vector3.forward, ForceMode.VelocityChange); 
         }
 
         else
@@ -83,7 +83,7 @@ public class PlayerControllerKeyBoard : MonoBehaviour
 
             moviendoseIzq = true;
 
-            rb.AddRelativeForce(2f * shiftSpeedModifier * Vector3.left, ForceMode.VelocityChange); 
+            rb.AddRelativeForce(0.2f * shiftSpeedModifier * Vector3.left, ForceMode.VelocityChange); 
         }
 
         else
@@ -102,7 +102,7 @@ public class PlayerControllerKeyBoard : MonoBehaviour
 
             moviendoseAtras= true;
 
-            rb.AddRelativeForce(2f * shiftSpeedModifier * Vector3.back, ForceMode.VelocityChange); 
+            rb.AddRelativeForce(0.2f * shiftSpeedModifier * Vector3.back, ForceMode.VelocityChange); 
         }
 
         else
@@ -120,7 +120,7 @@ public class PlayerControllerKeyBoard : MonoBehaviour
 
             moviendoseDer = true;
 
-            rb.AddRelativeForce(2f * shiftSpeedModifier * Vector3.right, ForceMode.VelocityChange); 
+            rb.AddRelativeForce(0.2f * shiftSpeedModifier * Vector3.right, ForceMode.VelocityChange); 
         }
 
         else
@@ -133,42 +133,7 @@ public class PlayerControllerKeyBoard : MonoBehaviour
         
 
     }
-
-    IEnumerator MoverCamara(string movimiento)
-        {
-
-            if (movimiento == "shift")
-            {
-
-                Debug.Log("shift");
-
-                for(int i = 0; i < 100; i++)
-                {
-                    camara.transform.GetChild(1).localPosition += new Vector3 (0,-0.002f,0);
-
-                    yield return new WaitForSeconds(0.002f);
-
-                }
-
-            }
-
-            if (movimiento == "back")
-            {
-
-                Debug.Log("back");
-
-                for(int i = 0; i < 100; i++)
-                {
-                    gameObject.transform.GetChild(1).localPosition += new Vector3 (0,0.002f,0);
-
-                    yield return new WaitForSeconds(0.002f);
-                }
-
-            }
-            
-        }
-  
-
+    
     void OnTriggerEnter(Collider other)
     {
         if (other.transform.CompareTag("Suelo"))

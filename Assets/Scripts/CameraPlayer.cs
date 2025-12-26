@@ -15,8 +15,6 @@ public class CameraPlayer : MonoBehaviour
     {
         gameObject.transform.position = player.position;
 
-        player.rotation = gameObject.transform.rotation;
-
         xRotation -= Input.GetAxis("Mouse Y") * Time.deltaTime * sensitivity;
 
         yRotation += Input.GetAxis("Mouse X") * Time.deltaTime * sensitivity;
