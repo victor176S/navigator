@@ -32,12 +32,6 @@ public class CameraPlayer : MonoBehaviour
 
     private void FPSCameraLogic()
     {
-        
-        gameObject.transform.position = playerTransform.position;
-
-        Vector3 eulerRotation = new Vector3(playerTransform.eulerAngles.x, transform.eulerAngles.y, playerTransform.eulerAngles.z);
-
-        player.transform.rotation = Quaternion.Euler(eulerRotation);
 
         xRotation -= Input.GetAxis("Mouse Y") * Time.deltaTime * sensitivity;
 
@@ -45,7 +39,9 @@ public class CameraPlayer : MonoBehaviour
 
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);             // to stop the player from looking above/below 90
 
-        transform.localEulerAngles = new Vector3(xRotation, yRotation, 0);
+        player.transform.localEulerAngles = new Vector3(0, yRotation, 0);
+
+        transform.localEulerAngles = new Vector3(xRotation, 0, 0);
 
     }
 
