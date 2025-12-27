@@ -9,6 +9,8 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
     public static PlayerControllerKeyBoard1 instance;
 
     private Rigidbody rb;
+    
+    public GameObject spawnPoint;
 
     public bool agachado;
 
@@ -22,11 +24,16 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
+
+        transform.position = spawnPoint.transform.position;
+
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+
+        
 
         //freno de movimiento
 
