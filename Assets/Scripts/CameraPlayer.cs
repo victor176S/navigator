@@ -1,4 +1,8 @@
+using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CameraPlayer : MonoBehaviour
 {
@@ -11,6 +15,9 @@ public class CameraPlayer : MonoBehaviour
     float xRotation;
 
     float yRotation;
+    private bool seAgachó = false;
+
+    int i = 0;
 
     void Start()
     {
@@ -22,7 +29,8 @@ public class CameraPlayer : MonoBehaviour
     {
 
         FPSCameraLogic();
- 
+        StartCoroutine(CameraShiftMovement());
+
     }
 
     private void Update()
@@ -45,11 +53,20 @@ public class CameraPlayer : MonoBehaviour
 
     }
 
-    private void CameraShiftMovement()
+    private IEnumerator CameraShiftMovement()
     {
-        if(Input.GetKey(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.LeftShift))
+
+        if (player.GetComponent<PlayerControllerKeyBoard1>().agachado && transform.localPosition.y > -0.3)
+        {   
+            transform.position += new Vector3 (0, -0.1f, 0);
+        }
+
+        if (!player.GetComponent<PlayerControllerKeyBoard1>().agachado && transform.localPosition.y < 0)
         {
-            
-        } 
+           transform.position += new Vector3 (0, +0.1f, 0);
+        }
+
+        yield return new WaitForSeconds(0.01f);
+        
     }
 }

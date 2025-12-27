@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 248603025}
   - component: {fileID: 248603024}
   - component: {fileID: 248603030}
+  - component: {fileID: 248603031}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -154,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agachado: 0
-  shiftSpeedModifier: 1
+  shiftSpeedModifier: 0
   enSuelo: 0
   moviendose: 0
   moviendoseAdelante: 0
@@ -174,7 +175,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 99
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
@@ -191,7 +192,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 248603023}
-  m_Material: {fileID: 13400000, guid: fd25858b93f1b774db307a1b35a47f11, type: 2}
+  m_Material: {fileID: 13400000, guid: 68f05a7e9b6307342a9d3a9d83cf1eed, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -204,7 +205,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 2
+  m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &248603027
@@ -303,6 +304,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!65 &248603031
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248603023}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.65, y: 0.060500145, z: 0.65}
+  m_Center: {x: 0, y: -1, z: 0}
 --- !u!1 &646860743
 GameObject:
   m_ObjectHideFlags: 0
@@ -1055,7 +1077,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2041350777}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 68f05a7e9b6307342a9d3a9d83cf1eed, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

@@ -38,11 +38,36 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
             rb.AddRelativeForce(9.81f * Time.fixedDeltaTime * Vector3.down, ForceMode.Acceleration);
 
         }
+
+        ModsDeMovimiento();
         
         DeteccionMovimiento();
 
         Movimiento();
 
+    }
+
+    private void ModsDeMovimiento()
+    {
+        if (agachado)
+        {
+            rb.linearVelocity *= 0.92f;
+        }
+
+        else
+        {
+            shiftSpeedModifier = 1;
+        }
+
+        if (!enSuelo)
+        {
+            rb.linearVelocity *= 0.96f;
+        }
+        
+        else
+        {
+            shiftSpeedModifier = 1;
+        }
     }
 
     private void DeteccionMovimiento()
@@ -53,7 +78,7 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
             
                 
             //no poner linear damping
-            rb.AddRelativeForce(2 * Vector3.up, ForceMode.Impulse);
+            rb.AddRelativeForce(1.5f * Vector3.up, ForceMode.Impulse);
 
             
 
@@ -149,28 +174,28 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
         if (moviendoseAdelante)
         {
             
-            rb.AddRelativeForce(20f * shiftSpeedModifier * Vector3.forward);
+            rb.AddRelativeForce(20f * Vector3.forward);
 
         }
 
         if (moviendoseAtras)
         {
             
-            rb.AddRelativeForce(20f * shiftSpeedModifier * Vector3.back);
+            rb.AddRelativeForce(20f * Vector3.back);
 
         }
 
         if (moviendoseDer)
         {
             
-            rb.AddRelativeForce(20f * shiftSpeedModifier * Vector3.right); 
+            rb.AddRelativeForce(20f * Vector3.right); 
 
         }
 
         if (moviendoseIzq)
         {
             
-            rb.AddRelativeForce(20f * shiftSpeedModifier * Vector3.left); 
+            rb.AddRelativeForce(20f * Vector3.left); 
 
         }
     }
