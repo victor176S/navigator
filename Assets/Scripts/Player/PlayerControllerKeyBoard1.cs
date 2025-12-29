@@ -9,6 +9,10 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
     public static PlayerControllerKeyBoard1 instance;
 
     private Rigidbody rb;
+
+    [SerializeField] private float rotacionSuelo;
+
+    [SerializeField] private float boostEnRampas;
     
     public GameObject spawnPoint;
 
@@ -19,10 +23,21 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
     [SerializeField] private bool enSuelo;
     [SerializeField] private bool moviendose, moviendoseAdelante, moviendoseAtras, moviendoseIzq, moviendoseDer;
     [SerializeField] private float rozamiento;
+    [SerializeField] private bool rampa;
+    private float rampaMargen = 1f;
+    private Vector3 rayCastFeetOffset;
+    [SerializeField] private bool esPared;
+    private float stepHeight = 0.3f;
+    [SerializeField] private bool saltando;
+
+    [SerializeField] private float gravedadCustom; //el default deberia ser 1
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        rayCastFeetOffset = new Vector3(0, transform.localScale.y +0.03f, 0);
+
         rb = gameObject.GetComponent<Rigidbody>();
 
         transform.position = spawnPoint.transform.position;
@@ -32,9 +47,6 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        
-
         //freno de movimiento
 
         rb.linearVelocity = Vector3.ClampMagnitude(rb.linearVelocity, 10);
@@ -42,9 +54,10 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
         if (!enSuelo)
         {
             
-            rb.AddRelativeForce(9.81f * Time.fixedDeltaTime * Vector3.down, ForceMode.Acceleration);
+            rb.AddRelativeForce(9.81f * 128 * gravedadCustom * Time.fixedDeltaTime * Vector3.down, ForceMode.Acceleration);
 
         }
+
 
         ModsDeMovimiento();
         
@@ -52,6 +65,13 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
 
         Movimiento();
 
+        Escalar();
+
+    }
+
+    private void Update()
+    {
+        DeteccionRayCast();
     }
 
     private void ModsDeMovimiento()
@@ -75,6 +95,17 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
         {
             shiftSpeedModifier = 1;
         }
+
+        if (rotacionSuelo > 0 || rotacionSuelo < 0 && rampa)
+        {
+            boostEnRampas = MathF.Sqrt(Mathf.Sqrt(Mathf.Abs(rotacionSuelo))) * 1.5f;
+        }
+        else
+        {
+            
+            boostEnRampas = 1;
+
+        }
     }
 
     private void DeteccionMovimiento()
@@ -82,12 +113,10 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
 
         if ((Input.GetKey(KeyCode.Space) && enSuelo) || (Input.GetKeyDown(KeyCode.Space) && enSuelo))
         {
-            
-                
             //no poner linear damping
-            rb.AddRelativeForce(1.5f * Vector3.up, ForceMode.Impulse);
+            rb.AddRelativeForce(1.5f * 24f * Vector3.up, ForceMode.Impulse);
 
-            
+            saltando = true;
 
         }
 
@@ -181,28 +210,28 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
         if (moviendoseAdelante)
         {
             
-            rb.AddRelativeForce(20f * Vector3.forward);
+            rb.AddRelativeForce(20f * boostEnRampas * Vector3.forward);
 
         }
 
         if (moviendoseAtras)
         {
             
-            rb.AddRelativeForce(20f * Vector3.back);
+            rb.AddRelativeForce(20f * boostEnRampas * Vector3.back);
 
         }
 
         if (moviendoseDer)
         {
             
-            rb.AddRelativeForce(20f * Vector3.right); 
+            rb.AddRelativeForce(20f * boostEnRampas * Vector3.right); 
 
         }
 
         if (moviendoseIzq)
         {
             
-            rb.AddRelativeForce(20f * Vector3.left); 
+            rb.AddRelativeForce(20f * boostEnRampas * Vector3.left); 
 
         }
     }
@@ -212,7 +241,19 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
         if (other.transform.CompareTag("Suelo"))
         {
             enSuelo = true;
+            saltando = false;
         }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+
+        if (other.transform.CompareTag("Suelo"))
+        {
+            enSuelo = true;
+        }
+
+        rotacionSuelo = other.transform.eulerAngles.x + other.transform.eulerAngles.z;
     }
 
     void OnTriggerExit(Collider collision)
@@ -223,4 +264,74 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
         }
     }
 
+    void Escalar()
+    {   
+			{
+				
+			}
+    }
+
+    private void DeteccionRayCast()
+    {
+        RaycastHit hitLower;
+        RaycastHit HitMiddle;
+        //RaycastHit hitHigher;
+			if (Physics.Raycast(transform.localPosition - rayCastFeetOffset, transform.TransformDirection(Vector3.forward), out hitLower, 0.3f) ||
+                Physics.Raycast(transform.localPosition - rayCastFeetOffset, transform.TransformDirection(Vector3.right), out hitLower, 0.3f) ||
+                Physics.Raycast(transform.localPosition - rayCastFeetOffset, transform.TransformDirection(Vector3.back), out hitLower, 0.3f) ||
+                Physics.Raycast(transform.localPosition - rayCastFeetOffset, transform.TransformDirection(Vector3.left), out hitLower, 0.3f))
+			{
+                
+				if (hitLower.point.y <= stepHeight && !esPared)
+				{
+
+
+					transform.position += new Vector3 (0, 0.032f, 0);
+				}
+                
+            }
+
+            if (Physics.Raycast(transform.position - rayCastFeetOffset, transform.TransformDirection(Vector3.down), out hitLower, 100f))
+            {
+                if (hitLower.point.y <= rampaMargen && hitLower.point.y > 0.02f && !saltando)
+				{
+
+
+					//transform.localPosition -= new Vector3 (0, 0.01f, 0);
+				}
+            }
+
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), 0.35f) ||
+                Physics.Raycast(transform.position, transform.TransformDirection(Vector3.right), 0.35f) ||
+                Physics.Raycast(transform.position, transform.TransformDirection(Vector3.back), 0.35f) ||
+                Physics.Raycast(transform.position, transform.TransformDirection(Vector3.left), 0.35f))
+            {
+
+                Debug.Log("ray if 1");
+            
+                esPared = true;
+
+            }
+
+            else
+            {
+
+                esPared = false;
+            
+            }
+
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out HitMiddle, 1f))
+            {
+
+                rampa = true;
+            
+            }
+
+            else
+            {
+
+                rampa = false;
+            
+            }
+    }
 }

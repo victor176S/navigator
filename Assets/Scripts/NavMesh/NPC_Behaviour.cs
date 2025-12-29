@@ -71,6 +71,11 @@ public class NPC_Behaviour : MonoBehaviour
     {
 
         destination = path.GetChild(childrenIndex).position;
+
+        if(destination == path.GetChild(childrenIndex).position)
+        {
+            Debug.Log("ha llegado");
+        }
         GetComponent<NavMeshAgent>().SetDestination(destination);
 
         while(true)
