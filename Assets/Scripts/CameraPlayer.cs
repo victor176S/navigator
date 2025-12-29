@@ -56,9 +56,9 @@ public class CameraPlayer : MonoBehaviour
     private IEnumerator CameraShiftMovement()
     {
 
-        if (player.GetComponent<PlayerControllerKeyBoard1>().agachado && transform.localPosition.y > -0.3)
+        if (player.GetComponent<PlayerControllerKeyBoard1>().agachado && transform.localPosition.y > -0.1)
         {   
-            transform.position += new Vector3 (0, -0.1f, 0);
+            transform.position += new Vector3 (0, -0.025f, 0);
         }
 
         if (!player.GetComponent<PlayerControllerKeyBoard1>().agachado && transform.localPosition.y < 0)

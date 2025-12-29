@@ -31,6 +31,7 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
     [SerializeField] private bool saltando;
 
     [SerializeField] private float gravedadCustom; //el default deberia ser 1
+    private bool forzarAgachado;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -41,7 +42,6 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
 
         transform.position = spawnPoint.transform.position;
-
     }
 
     // Update is called once per frame
@@ -54,7 +54,7 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
         if (!enSuelo)
         {
             
-            rb.AddRelativeForce(9.81f * 128 * gravedadCustom * Time.fixedDeltaTime * Vector3.down, ForceMode.Acceleration);
+            rb.AddRelativeForce(9.81f * 146 * gravedadCustom * Time.fixedDeltaTime * Vector3.down, ForceMode.Acceleration);
 
         }
 
@@ -65,7 +65,7 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
 
         Movimiento();
 
-        Escalar();
+
 
     }
 
@@ -122,6 +122,8 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.LeftShift))
         {
+
+            transform.localScale = new Vector3(0.5f, 0.2f, 0.5f);
             
             agachado = true;
 
@@ -129,7 +131,20 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
 
         else
         {
-            agachado = false;
+            if (!forzarAgachado)
+            {
+                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+                agachado = false;
+            }
+
+            if (forzarAgachado)
+            {
+                transform.localScale = new Vector3(0.5f, 0.2f, 0.5f);
+            
+                agachado = true;
+            }
+            
         }
 
         //de frente
@@ -263,14 +278,6 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
             enSuelo = false;
         }
     }
-
-    void Escalar()
-    {   
-			{
-				
-			}
-    }
-
     private void DeteccionRayCast()
     {
         RaycastHit hitLower;
@@ -332,6 +339,22 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
 
                 rampa = false;
             
+            }
+
+            if (Physics.Raycast(transform.position + new Vector3(0.3f, 0, 0), transform.TransformDirection(Vector3.up), 1.2f) ||
+                Physics.Raycast(transform.position + new Vector3(-0.3f, 0, 0), transform.TransformDirection(Vector3.up), 1.2f) ||
+                Physics.Raycast(transform.position + new Vector3(0, 0, 0.3f), transform.TransformDirection(Vector3.up), 1.2f) ||
+                Physics.Raycast(transform.position + new Vector3(0, 0, -0.3f), transform.TransformDirection(Vector3.up), 1.2f))
+            {
+
+                Debug.Log("Forzar");
+
+                forzarAgachado = true;
+            }
+
+            else
+            {
+                forzarAgachado = false;
             }
     }
 }
