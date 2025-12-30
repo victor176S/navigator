@@ -6,7 +6,6 @@ using UnityEngine.InputSystem.iOS;
 
 public class NPC_Behaviour : MonoBehaviour
 {
-
     [SerializeField] private Vector3 destination;
     [Tooltip("Si no se le asigna nada, el movimiento será independiente")]
     [SerializeField] private GameObject player;
@@ -16,6 +15,9 @@ public class NPC_Behaviour : MonoBehaviour
     [SerializeField] private bool isNPC;
     [SerializeField] private float playerDetectionDistance;
     [SerializeField] private bool playerDetected;
+
+    [SerializeField] private float contador;
+
     private Coroutine runningPatroll;
     public void Start()
     {
@@ -36,10 +38,33 @@ public class NPC_Behaviour : MonoBehaviour
     void Update()
     {
 
-        
-            
-        
+        if (playerDetected)
+        {
 
+        transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+
+        }
+
+        else
+        {
+            transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+
+            transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+        }
+
+        if (player.GetComponent<PlayerControllerKeyBoard1>().escondido == true)
+        {
+            playerDetected = false;
+
+            contador = 0;
+
+            StopCoroutine("Follow");
+
+            if(runningPatroll == null)
+            {
+                runningPatroll = StartCoroutine("Patroll");
+            }
+        }
     }
 
     
@@ -53,14 +78,18 @@ public class NPC_Behaviour : MonoBehaviour
 
     IEnumerator Follow()
     {
-        while (true)
-        {
-            destination = player.transform.position;
-            GetComponent<NavMeshAgent>().SetDestination(destination);
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForSeconds(1);
-        }
+
+        transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
         
+            while (true)
+            {
+                destination = player.transform.position;
+                GetComponent<NavMeshAgent>().SetDestination(destination);
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForSeconds(1);
+            }
+        
+
     }
 
     #endregion
@@ -158,10 +187,21 @@ public class NPC_Behaviour : MonoBehaviour
             }
 
             playerDetected = true;
-            StartCoroutine("Follow");
 
         }
     
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        
+        contador += Time.deltaTime / 2;
+
+        if (contador > 2f)
+        {
+            StartCoroutine("Follow");
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -178,6 +218,7 @@ public class NPC_Behaviour : MonoBehaviour
             }
         }
 
+        contador = 0;
         
     }
 

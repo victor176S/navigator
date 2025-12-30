@@ -33,6 +33,8 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
     [SerializeField] private float gravedadCustom; //el default deberia ser 1
     private bool forzarAgachado;
 
+    public bool escondido;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
