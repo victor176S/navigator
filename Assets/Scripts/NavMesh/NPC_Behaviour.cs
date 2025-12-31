@@ -16,6 +16,8 @@ public class NPC_Behaviour : MonoBehaviour
     [SerializeField] private float playerDetectionDistance;
     [SerializeField] private bool playerDetected;
 
+    [SerializeField] private float delayPatroll;
+
     [SerializeField] private float contador;
 
     private Coroutine runningPatroll;
@@ -130,7 +132,7 @@ public class NPC_Behaviour : MonoBehaviour
                 
             }
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(delayPatroll);
 
         }
     }

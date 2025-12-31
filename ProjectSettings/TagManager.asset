@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Suelo
+  - Puerta
+  - Entrada
+  - Ventilacion 1
   layers:
   - Default
   - TransparentFX

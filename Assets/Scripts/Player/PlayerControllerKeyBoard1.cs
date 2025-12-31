@@ -27,7 +27,7 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
     private float rampaMargen = 1f;
     private Vector3 rayCastFeetOffset;
     [SerializeField] private bool esPared;
-    private float stepHeight = 0.3f;
+    private float stepHeight = 10f;
     [SerializeField] private bool saltando;
 
     [SerializeField] private float gravedadCustom; //el default deberia ser 1
@@ -122,6 +122,9 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
 
         }
 
+        //poner objetos que no sean planos para solucionar automaticamente 
+        //el bug de ser más bajo sistema de agachado
+
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.LeftShift))
         {
 
@@ -148,7 +151,6 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
             }
             
         }
-
         //de frente
         if (Input.GetKey(KeyCode.W) || Input.GetKeyDown(KeyCode.W))
         {
@@ -295,7 +297,7 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
 				{
 
 
-					transform.position += new Vector3 (0, 0.032f, 0);
+					transform.position += new Vector3 (0, 0.05f, 0);
 				}
                 
             }
@@ -343,10 +345,10 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
             
             }
 
-            if (Physics.Raycast(transform.position + new Vector3(0.3f, 0, 0), transform.TransformDirection(Vector3.up), 1.2f) ||
-                Physics.Raycast(transform.position + new Vector3(-0.3f, 0, 0), transform.TransformDirection(Vector3.up), 1.2f) ||
-                Physics.Raycast(transform.position + new Vector3(0, 0, 0.3f), transform.TransformDirection(Vector3.up), 1.2f) ||
-                Physics.Raycast(transform.position + new Vector3(0, 0, -0.3f), transform.TransformDirection(Vector3.up), 1.2f))
+            if (Physics.Raycast(transform.position + new Vector3(0.2f, 0, 0), transform.TransformDirection(Vector3.up), 1.2f) ||
+                Physics.Raycast(transform.position + new Vector3(-0.2f, 0, 0), transform.TransformDirection(Vector3.up), 1.2f) ||
+                Physics.Raycast(transform.position + new Vector3(0, 0, 0.2f), transform.TransformDirection(Vector3.up), 1.2f) ||
+                Physics.Raycast(transform.position + new Vector3(0, 0, -0.2f), transform.TransformDirection(Vector3.up), 1.2f))
             {
 
                 Debug.Log("Forzar");
