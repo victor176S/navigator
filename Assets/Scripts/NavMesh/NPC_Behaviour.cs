@@ -21,6 +21,8 @@ public class NPC_Behaviour : MonoBehaviour
     [SerializeField] private float contador;
 
     private Coroutine runningPatroll;
+    private bool ciego;
+
     public void Start()
     {
         
@@ -39,6 +41,7 @@ public class NPC_Behaviour : MonoBehaviour
 
     void Update()
     {
+
 
         if (playerDetected)
         {
@@ -67,6 +70,8 @@ public class NPC_Behaviour : MonoBehaviour
                 runningPatroll = StartCoroutine("Patroll");
             }
         }
+
+
     }
 
     
@@ -196,12 +201,15 @@ public class NPC_Behaviour : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        
-        contador += Time.deltaTime / 2;
-
-        if (contador > 2f)
+        if (other.gameObject.CompareTag("Player"))
         {
-            StartCoroutine("Follow");
+        
+            contador += Time.deltaTime / 2;
+
+            if (contador > 2f)
+            {
+                StartCoroutine("Follow");
+            }
         }
 
     }

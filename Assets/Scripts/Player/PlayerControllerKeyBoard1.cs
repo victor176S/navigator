@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -131,6 +132,7 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
             transform.localScale = new Vector3(0.5f, 0.2f, 0.5f);
             
             agachado = true;
+            
 
         }
 
@@ -139,6 +141,8 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
             if (!forzarAgachado)
             {
                 transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+                escondido = false;
 
                 agachado = false;
             }
@@ -150,6 +154,11 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
                 agachado = true;
             }
             
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift) && !forzarAgachado)
+        {
+            transform.position += new Vector3(0, 0.5f, 0);
         }
         //de frente
         if (Input.GetKey(KeyCode.W) || Input.GetKeyDown(KeyCode.W))
@@ -293,7 +302,7 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
                 Physics.Raycast(transform.localPosition - rayCastFeetOffset, transform.TransformDirection(Vector3.left), out hitLower, 0.3f))
 			{
                 
-				if (hitLower.point.y <= stepHeight && !esPared)
+				if (hitLower.point.y <= stepHeight && !esPared && !rampa)
 				{
 
 
@@ -331,11 +340,13 @@ public class PlayerControllerKeyBoard1 : MonoBehaviour
             
             }
 
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out HitMiddle, 1f))
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), out HitMiddle, 1f))
             {
 
-                rampa = true;
-            
+                if(HitMiddle.transform.rotation.eulerAngles.x > 0 || HitMiddle.transform.rotation.eulerAngles.z > 0)
+                {
+                    rampa = true;
+                }  
             }
 
             else

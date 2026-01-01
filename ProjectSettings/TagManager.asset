@@ -8,11 +8,17 @@ TagManager:
   - Puerta
   - Entrada
   - Ventilacion 1
+  - Hide
+  - Sala 2
+  - Sala 3
+  - WinTrigger
+  - Diamante
+  - Edificio
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - player
   - Water
   - UI
   - 
