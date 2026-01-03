@@ -1,8 +1,6 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.iOS;
 
 public class NPC_Behaviour : MonoBehaviour
 {

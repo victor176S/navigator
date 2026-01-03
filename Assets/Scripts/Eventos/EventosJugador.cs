@@ -1,7 +1,5 @@
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -36,7 +34,7 @@ public class EventosJugador : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Entrada"))
         {
-            StartCoroutine(MovimientoPuerta());
+            StartCoroutine(MovimientoPuerta(other.gameObject));
         }
 
         if (other.gameObject.CompareTag("Ventilacion1"))
@@ -51,10 +49,10 @@ public class EventosJugador : MonoBehaviour
 
         if (other.gameObject.CompareTag("Sala 3"))
         {
-            StartCoroutine(TextoSala3());
+            StartCoroutine(TextoSala3(other.gameObject));
         }
 
-        if (other.gameObject.CompareTag("WinTrigger"))
+        if (other.gameObject.CompareTag("WinTrigger") && tieneDiamante)
         {
             SceneManager.LoadScene(2);
         }
@@ -71,9 +69,33 @@ public class EventosJugador : MonoBehaviour
             StartCoroutine(TextoSala4(other.gameObject));
         }
 
+        if (other.gameObject.CompareTag("Caida"))
+        {
+            var data = GameObject.Find("Data");
+
+            data.GetComponent<Data>().muertoCaida = true;
+
+            if (data.GetComponent<Data>().muertoCaida == true)
+            {
+                Debug.Log("Data true");
+            }
+
+            SceneManager.LoadScene(3);
+        }
+
+        if (other.gameObject.CompareTag("NPC"))
+        {
+            SceneManager.LoadScene(3);
+        }
+
+        if (other.gameObject.CompareTag("Punto seguro"))
+        {
+            other.gameObject.transform.parent.gameObject.SetActive(false);
+        }
+
     }
 
-    IEnumerator MovimientoPuerta()
+    IEnumerator MovimientoPuerta(GameObject other)
     {
         for(int i = 0; i < 20; i++)
         {
@@ -81,6 +103,8 @@ public class EventosJugador : MonoBehaviour
 
            yield return new WaitForSeconds(0.02f);  
         }
+
+        other.gameObject.SetActive(false);
     }
 
     IEnumerator TextoSala2(GameObject other)
@@ -94,13 +118,15 @@ public class EventosJugador : MonoBehaviour
        other.gameObject.SetActive(false);
     }
 
-    IEnumerator TextoSala3()
+    IEnumerator TextoSala3(GameObject other)
     {
        texto3.gameObject.SetActive(true);
 
        yield return new WaitForSeconds(8f);
 
        texto3.gameObject.SetActive(false);
+
+       other.gameObject.SetActive(false);
     }
 
     IEnumerator TextoSala4(GameObject other)
