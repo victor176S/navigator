@@ -18,12 +18,15 @@ public class NPC_Behaviour : MonoBehaviour
 
     [SerializeField] private float contador;
 
+    private float tiempoMargen;
+
     private Coroutine runningPatroll;
     private bool ciego;
 
     public void Start()
     {
         
+        tiempoMargen = GameObject.Find("Data").gameObject.GetComponent<GeneralData>().dificultad;
         
         
         if (isNPC)
@@ -204,7 +207,7 @@ public class NPC_Behaviour : MonoBehaviour
         
             contador += Time.deltaTime / 2;
 
-            if (contador > 2f)
+            if (contador > 2f / tiempoMargen)
             {
                 StartCoroutine("Follow");
             }

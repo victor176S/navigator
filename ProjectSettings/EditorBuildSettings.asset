@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Pantalla perder.unity
     guid: c3e6ff83f85114e4ea1143235eb03c8a
+  - enabled: 0
+    path: Assets/Scenes/Example.unity
+    guid: 472e3fbd7b14f534daf964740f783262
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
